@@ -16,7 +16,7 @@ describe('Gilded Rose - "Sulfuras, Hand of Ragnaros"', function () {
     });    
 });
 
-describe.only('Gilded Rose - "Aged Brie"', function () {
+describe('Gilded Rose - "Aged Brie"', function () {
 
     it('for item "Aged Brie", increases in quality as it gets older and till it reaches 50. sellin value decreases by 1', function() {
         const gildedRose = new GildedRose([ new Item('Aged Brie', 11, 49) ]);
