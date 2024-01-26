@@ -35,7 +35,8 @@ export class GildedRose {
                     if(this.items[i].sellIn>10){
                         if(this.items[i].quality<50) this.items[i].quality=this.items[i].quality+1;
                     }
-                    else if(this.items[i].sellIn<11 && this.items[i].sellIn>6){
+                    else if(this.items[i].sellIn<11 && this.items[i].sellIn>=6){
+                        console.log('--->Test')
                         for(let j=0; j<2; j++)
                             if(this.items[i].quality<50) this.items[i].quality=this.items[i].quality+1;
                     }

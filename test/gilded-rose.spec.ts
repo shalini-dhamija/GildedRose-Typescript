@@ -1,136 +1,130 @@
 import { expect } from 'chai';
 import { Item, GildedRose } from '../app/gilded-rose';
 
-describe('Gilded Rose - "Sulfuras, Hand of Ragnaros"', function () {
+describe('Golden Master Test', function () {
 
-    it('for item "Sulfuras, Hand of Ragnaros", never decrease in quality and never has to be sold', function() {
-        const gildedRose = new GildedRose([ new Item('Sulfuras, Hand of Ragnaros', 11, 49) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(49);
-        expect(items[0].sellIn).to.equal(11);
+    describe('Backstage passes to a TAFKAL80ETC concert tests', function () {
+
+        const backStagePassesName = "Backstage passes to a TAFKAL80ETC concert";
+
+        it('quality less than 50, quality should increase by 1', function () {
+            const gildedRose = new GildedRose([ new Item(backStagePassesName, 12, 0) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(backStagePassesName);
+            expect(items[0].quality).to.equal(1);
+        });
+
+        it('quality less than 50, 5 < sellIn < 11, quality should increase by 2', function () {
+            const gildedRose = new GildedRose([ new Item(backStagePassesName, 6, 0) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(backStagePassesName);
+            expect(items[0].quality).to.equal(2);
+        });
+
+        it('quality less than 50, sellIn < 6, quality should increase by 3', function () {
+            const gildedRose = new GildedRose([ new Item(backStagePassesName, 5, 0) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(backStagePassesName);
+            expect(items[0].quality).to.equal(3);
+        });
+
+        it('quality is 49, sellIn < 6, quality should increase by 1', function () {
+            const gildedRose = new GildedRose([ new Item(backStagePassesName, 5, 49) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(backStagePassesName);
+            expect(items[0].quality).to.equal(50);
+        });
+
+        it('quality less than 50, sellIn < 1, sellIn should be -1, quality should be 0', function () {
+            const gildedRose = new GildedRose([ new Item(backStagePassesName, 0, 0) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(backStagePassesName);
+            expect(items[0].sellIn).to.equal(-1);
+            expect(items[0].quality).to.equal(0);
+        });
     });
 
-    it('for item "Sulfuras, Hand of Ragnaros", allows quality than 50', function() {
-        const gildedRose = new GildedRose([ new Item('Sulfuras, Hand of Ragnaros', 10, 60) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(60);
-        expect(items[0].sellIn).to.equal(10);
-    });    
-});
+    describe('Aged Brie tests', function () {
 
-describe('Gilded Rose - "Aged Brie"', function () {
+        const agedBrieName = "Aged Brie";
 
-    it('for item "Aged Brie", increases in quality as it gets older and till it reaches 50. sellin value decreases by 1', function() {
-        const gildedRose = new GildedRose([ new Item('Aged Brie', 11, 49) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(10);
+        it('quality less than 50, quality should increase by 1', function () {
+            const gildedRose = new GildedRose([ new Item(agedBrieName, 12, 0) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(agedBrieName);
+            expect(items[0].quality).to.equal(1);
+        });
+
+        it('quality > 50, quality should not change', function () {
+            const gildedRose = new GildedRose([ new Item(agedBrieName, 12, 50) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(agedBrieName);
+            expect(items[0].quality).to.equal(50);
+        });
+
+        it('quality less than 50, sellIn < 1, quality should increase by 2', function () {
+            const gildedRose = new GildedRose([ new Item(agedBrieName, 0, 0) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(agedBrieName);
+            expect(items[0].quality).to.equal(2);
+        });
+
+        it('quality > 50, sellIn < 1, quality should not change', function () {
+            const gildedRose = new GildedRose([ new Item(agedBrieName, 0, 50) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(agedBrieName);
+            expect(items[0].quality).to.equal(50);
+        });
     });
 
-    it('for item "Aged Brie", quality does not increase when it reaches 50. sellin value decreases by 1', function() {
-        const gildedRose = new GildedRose([ new Item('Aged Brie', 10, 50) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(9);
-    });
-    
-    it('for item "Aged Brie", if sellIn reaches 0, increment quality by 2', function() {
-        const gildedRose = new GildedRose([ new Item('Aged Brie', 0, 48) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(-1);
-    });     
+    describe('Sulfuras, Hand of Ragnaros tests', function () {
 
-    it('for item "Aged Brie", if sellIn reaches 0, increment quality by 2 until it reaches 50', function() {
-        const gildedRose = new GildedRose([ new Item('Aged Brie', 0, 49) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(-1);
-    }); 
-});
+        const handOfRagnarosName = "Sulfuras, Hand of Ragnaros";
 
-describe('Gilded Rose - "Backstage passes"', function () {
+        it('does not change', function () {
+            const gildedRose = new GildedRose([ new Item(handOfRagnarosName, 12, 5) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(handOfRagnarosName);
+            expect(items[0].quality).to.equal(5);
+            expect(items[0].sellIn).to.equal(12);
+        });
 
-    it('for item "Backstage passes", sellIn less than 6, increment quantity by 3', function() {
-        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', 5, 47) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(4);
+        it('does not change, even with low values', function () {
+            const gildedRose = new GildedRose([ new Item(handOfRagnarosName, -1, 5) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(handOfRagnarosName);
+            expect(items[0].quality).to.equal(5);
+            expect(items[0].sellIn).to.equal(-1);
+        });
     });
 
-    it('for item "Backstage passes", sellIn less than 6, increment quantity by 3 until 50', function() {
-        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', 5, 49) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(4);
+    describe('Others tests', function () {
+
+        const otherName = "Other";
+
+        it('0 < quality < 50, quality should decrease by 1', function () {
+            const gildedRose = new GildedRose([ new Item(otherName, 12, 2) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(otherName);
+            expect(items[0].quality).to.equal(1);
+            expect(items[0].sellIn).to.equal(11);
+        });
+
+        it('sellIn < 0, quality > 0, should decrease by 1', function () {
+            const gildedRose = new GildedRose([ new Item(otherName, -1, 2) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(otherName);
+            expect(items[0].quality).to.equal(0);
+            expect(items[0].sellIn).to.equal(-2);
+        });
+
+        it('sellIn < 0, quality < 0, should not change', function () {
+            const gildedRose = new GildedRose([ new Item(otherName, -1, -2) ]);
+            const items = gildedRose.updateQuality();
+            expect(items[0].name).to.equal(otherName);
+            expect(items[0].quality).to.equal(-2);
+            expect(items[0].sellIn).to.equal(-2);
+        });
     });
 
-    it('for item "Backstage passes", sellIn less than 11, increment quantity by 2', function() {
-        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', 10, 48) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(9);
-    });
-
-    it('for item "Backstage passes", sellIn less than 11, increment quantity by 2 until 50', function() {
-        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', 10, 49) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(9);
-    });
-    
-    it('for item "Backstage passes", sellIn greater than equal to 11, increment quaantity by 1', function() {
-        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', 11, 49) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(10);
-    });     
-
-    it('for item "Backstage passes", sellIn greater than equal to 11, increment quaantity by 1 until 50', function() {
-        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', 11, 50) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50);
-        expect(items[0].sellIn).to.equal(10);
-    });  
-
-    it('for item "Backstage passes", if sellIn reaches 0, quality drops to 0', function() {
-        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', 0, 48) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(0);
-        expect(items[0].sellIn).to.equal(-1);
-    }); 
-});
-
-describe('Gilded Rose - "Any other item"', function () {
-
-    it('for item "Any other item", Quality degrades by 1 if sellIn is greater than 0', function() {
-        const gildedRose = new GildedRose([ new Item('Test', 11, 49) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(48);
-        expect(items[0].sellIn).to.equal(10);
-    });
-
-    it('for item "Any other item", Quality degrades twice as fast if sellIn is less than or equal to 0', function() {
-        const gildedRose = new GildedRose([ new Item('Test', 0, 49) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(47);
-        expect(items[0].sellIn).to.equal(-1);
-    });  
-});
-
-describe('Gilded Rose - "Conjured Mana Cake"', function () {
-
-    it('for item "Conjured Mana Cake", Quality degrades by 2', function() {
-        const gildedRose = new GildedRose([ new Item('Conjured Mana Cake', 11, 49) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(47);
-        expect(items[0].sellIn).to.equal(10);
-    });    
-
-    it('for item "Conjured Mana Cake", Quality degrades by 2 until it reaches 0', function() {
-        const gildedRose = new GildedRose([ new Item('Conjured Mana Cake', 11, 1) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(0);
-        expect(items[0].sellIn).to.equal(10);
-    });    
 });
